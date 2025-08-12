@@ -1,0 +1,54 @@
+.about-section {
+  background-color: #fff;
+}
+
+.about-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+  gap: 4rem;
+}
+
+.doctor-about-photo {
+  width: 450px;
+  height: 550px;
+  background-color: #ecf0f1;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.about-text-content {
+  flex: 1;
+}
+
+.about-text {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #34495e;
+  margin-bottom: 1.5rem;
+}
+
+@media (max-width: 1024px) {
+  .about-container {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .doctor-about-photo {
+    width: 350px;
+    height: 450px;
+  }
+}
+
+@media (max-width: 480px) {
+  .doctor-about-photo {
+    width: 280px;
+    height: 380px;
+  }
+  
+  .about-text {
+    font-size: 1rem;
+  }
+}
