@@ -1,7 +1,13 @@
+import { useState } from 'react';
 import './Navbar.css';
 
 const Navbar = ({ activeSection, navigateTo }) => {
   const sections = ['home', 'about', 'services', 'testimonials', 'contact'];
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
 
   return (
     <nav className="navbar">
@@ -11,11 +17,14 @@ const Navbar = ({ activeSection, navigateTo }) => {
           <span className="logo-text">Dr. Rahman's Clinic</span>
         </div>
       </div>
-      <ul className="nav-list">
+      <ul className={`nav-list ${isMobileMenuOpen ? 'mobile-open' : ''}`}>
         {sections.map((section) => (
           <li key={section} className="nav-item">
             <button 
-              onClick={() => navigateTo(section)} 
+              onClick={() => {
+                navigateTo(section);
+                setIsMobileMenuOpen(false);
+              }} 
               className={`nav-button ${activeSection === section ? 'active' : ''}`}
               aria-label={`Navigate to ${section} section`}
             >
@@ -24,11 +33,15 @@ const Navbar = ({ activeSection, navigateTo }) => {
           </li>
         ))}
       </ul>
-      <div className="mobile-menu-button">
+      <button 
+        className="mobile-menu-button"
+        onClick={toggleMobileMenu}
+        aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
+      >
         <span></span>
         <span></span>
         <span></span>
-      </div>
+      </button>
     </nav>
   );
 };

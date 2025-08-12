@@ -1,17 +1,19 @@
-/* ContactSection.css */
+* {
+  box-sizing: border-box;
+}
 
-/* Section container */
 .contact-section {
+  padding: 4rem 2rem;
   background: linear-gradient(to bottom, #f0f7ff, #ffffff);
-  padding: 3rem 1rem;
-  min-height: 80vh;
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
 }
 
-/* Section title */
 .section-title {
   font-size: 2.5rem;
   font-weight: 700;
@@ -36,90 +38,93 @@
   border-radius: 2px;
 }
 
-/* Contact container */
 .contact-container {
-  max-width: 1000px;
+  max-width: 1200px;
   width: 90%;
   margin: 0 auto;
   display: flex;
-  flex-direction: column;
   gap: 2rem;
 }
 
-/* Contact info */
-.contact-info {
+.contact-info-panel {
+  flex: 1;
   background: #ffffff;
-  border-radius: 1rem;
-  padding: 2rem;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   border: 1px solid #bfdbfe;
-  text-align: center;
   position: relative;
-  animation: slideIn 0.6s ease-out forwards;
+  overflow: hidden;
 }
 
-.contact-info::before {
-  content: '';
+.wave-background {
   position: absolute;
   top: 0;
-  right: 0;
-  width: 5rem;
-  height: 5rem;
-  background: radial-gradient(circle, #bfdbfe, transparent);
-  border-bottom-left-radius: 100%;
-  opacity: 0.25;
-  transition: opacity 0.3s ease;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, #bfdbfe, transparent);
+  opacity: 0.2;
+  animation: wave 10s ease-in-out infinite;
+  z-index: 0;
 }
 
-.contact-info:hover::before {
-  opacity: 0.4;
+@keyframes wave {
+  0% {
+    transform: translateX(-50%) translateY(-50%) scale(1);
+  }
+  50% {
+    transform: translateX(-40%) translateY(-40%) scale(1.2);
+  }
+  100% {
+    transform: translateX(-50%) translateY(-50%) scale(1);
+  }
+}
+
+.contact-info {
+  position: relative;
+  z-index: 1;
+  padding: 2rem;
 }
 
 .contact-info h3 {
-  font-size: 1.75rem;
+  font-size: 1.5rem;
   font-weight: 600;
-  color: #111827;
+  color: #1e40af;
   margin-bottom: 1rem;
 }
 
 .contact-info p {
-  font-size: 1.125rem;
-  line-height: 1.8;
-  color: #4b5563;
+  font-size: 1rem;
+  color: #555;
+  line-height: 1.6;
   margin-bottom: 1.5rem;
 }
 
-/* Contact form */
-.contact-form {
+.contact-form-panel {
+  flex: 1;
   background: #ffffff;
-  border-radius: 1rem;
-  padding: 2rem;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   border: 1px solid #bfdbfe;
-  animation: slideIn 0.6s ease-out forwards;
-  animation-delay: 0.2s;
+  padding: 2rem;
 }
 
-.contact-form::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 5rem;
-  height: 5rem;
-  background: radial-gradient(circle, #bfdbfe, transparent);
-  border-bottom-right-radius: 100%;
-  opacity: 0.25;
-  transition: opacity 0.3s ease;
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
-.contact-form:hover::before {
-  opacity: 0.4;
-}
-
-/* Form group */
 .form-group {
-  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #1e40af;
+  margin-bottom: 0.5rem;
 }
 
 .form-group input,
@@ -127,17 +132,19 @@
   width: 100%;
   padding: 0.75rem;
   font-size: 1rem;
-  color: #1f2937;
   border: 1px solid #bfdbfe;
-  border-radius: 0.5rem;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 4px;
+  color: #333;
+  background: #f8f9fa;
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .form-group input:focus,
 .form-group textarea:focus {
   outline: none;
   border-color: #2563eb;
-  box-shadow: 0 0 8px rgba(37, 99, 235, 0.2);
+  box-shadow: 0 0 5px rgba(37, 99, 235, 0.3);
+  transform: scale(1.02);
 }
 
 .form-group textarea {
@@ -145,35 +152,24 @@
   min-height: 120px;
 }
 
-.form-group input::placeholder,
-.form-group textarea::placeholder {
-  color: #9ca3af;
-}
-
-/* CTA button */
 .cta-button {
   background: #2563eb;
   color: #ffffff;
-  font-size: 1.125rem;
-  font-weight: 600;
-  padding: 0.75rem 1.5rem;
   border: none;
-  border-radius: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  border-radius: 4px;
   cursor: pointer;
-  transition: background 0.3s ease, transform 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  align-self: center;
 }
 
 .cta-button:hover {
   background: #1e40af;
-  transform: scale(1.05);
+  transform: translateY(-2px);
 }
 
-.cta-button:focus {
-  outline: none;
-  box-shadow: 0 0 8px rgba(37, 99, 235, 0.3);
-}
-
-/* Animations */
 @keyframes fadeInScale {
   from {
     opacity: 0;
@@ -185,38 +181,21 @@
   }
 }
 
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Responsive design */
-@media (min-width: 768px) {
+@media (max-width: 1024px) {
   .contact-container {
-    flex-direction: row;
-    align-items: stretch;
+    flex-direction: column;
+    max-width: 95%;
   }
 
-  .contact-info,
-  .contact-form {
-    flex: 1;
-  }
-
-  .section-title {
-    font-size: 3rem;
+  .contact-info-panel,
+  .contact-form-panel {
+    width: 100%;
   }
 }
 
 @media (max-width: 768px) {
   .contact-section {
     padding: 2.5rem 1rem;
-    min-height: auto;
   }
 
   .section-title {
@@ -228,27 +207,31 @@
     height: 3px;
   }
 
-  .contact-info,
-  .contact-form {
-    padding: 1.5rem;
-  }
-
   .contact-info h3 {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
   }
 
   .contact-info p {
-    font-size: 1rem;
+    font-size: 0.95rem;
+  }
+
+  .contact-form-panel {
+    padding: 1.5rem;
+  }
+
+  .form-group label {
+    font-size: 0.95rem;
   }
 
   .form-group input,
   .form-group textarea {
     font-size: 0.95rem;
+    padding: 0.6rem;
   }
 
   .cta-button {
-    font-size: 1rem;
     padding: 0.6rem 1.2rem;
+    font-size: 0.95rem;
   }
 }
 
@@ -257,45 +240,39 @@
     padding: 2rem 0.75rem;
   }
 
+  .section-title {
+    font-size: 1.8rem;
+  }
+
   .contact-container {
     width: 95%;
   }
 
-  .section-title {
-    font-size: 1.75rem;
-  }
-
-  .section-title::after {
-    width: 40px;
-    height: 2px;
-  }
-
-  .contact-info,
-  .contact-form {
+  .contact-info-panel,
+  .contact-form-panel {
     padding: 1.25rem;
   }
 
   .contact-info h3 {
-    font-size: 1.25rem;
+    font-size: 1.2rem;
   }
 
   .contact-info p {
-    font-size: 0.95rem;
-    line-height: 1.6;
+    font-size: 0.9rem;
+  }
+
+  .form-group label {
+    font-size: 0.9rem;
   }
 
   .form-group input,
   .form-group textarea {
     font-size: 0.9rem;
-    padding: 0.6rem;
-  }
-
-  .form-group textarea {
-    min-height: 100px;
+    padding: 0.5rem;
   }
 
   .cta-button {
-    font-size: 0.95rem;
     padding: 0.5rem 1rem;
+    font-size: 0.9rem;
   }
 }

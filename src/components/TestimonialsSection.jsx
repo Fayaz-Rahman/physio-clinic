@@ -1,15 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import './TestimonialsSection.css';
 import { testimonials } from '../data/testimonials';
 
 // Animation variants for smooth transitions
 const containerVariants = {
-  hidden: { opacity: 0, y: 30 },
+  hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    y: 0,
-    transition: { duration: 0.6, staggerChildren: 0.2 },
+    transition: { duration: 0.6 },
   },
 };
 
@@ -20,15 +19,36 @@ const cardVariants = {
 
 const TestimonialsSection = () => {
   const [currentTestimonialIndex, setCurrentTestimonialIndex] = useState(0);
+  const carouselRef = useRef(null);
 
+  // Sync dots with approximate scroll position
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentTestimonialIndex((prevIndex) =>
-        (prevIndex + 1) % testimonials.length
-      );
-    }, 5000);
-    return () => clearInterval(interval);
+    const handleScroll = () => {
+      if (carouselRef.current) {
+        const scrollTop = carouselRef.current.scrollTop;
+        const itemHeight = 180; // Match CSS min-height of testimonial-card
+        const itemsPerRow = window.innerWidth <= 768 ? (window.innerWidth <= 640 ? 1 : 2) : 3;
+        const rowHeight = itemHeight;
+        const index = Math.round(scrollTop / rowHeight) % Math.ceil(testimonials.length / itemsPerRow);
+        setCurrentTestimonialIndex(index);
+      }
+    };
+    carouselRef.current?.addEventListener('scroll', handleScroll);
+    return () => carouselRef.current?.removeEventListener('scroll', handleScroll);
   }, [testimonials.length]);
+
+  const scrollToIndex = (index) => {
+    if (carouselRef.current) {
+      const itemHeight = 180; // Match CSS min-height of testimonial-card
+      const itemsPerRow = window.innerWidth <= 768 ? (window.innerWidth <= 640 ? 1 : 2) : 3;
+      const rowHeight = itemHeight;
+      carouselRef.current.scrollTo({ top: index * rowHeight, behavior: 'smooth' });
+      setCurrentTestimonialIndex(index);
+    }
+  };
+
+  // Duplicate testimonials multiple times for smooth infinite scroll
+  const duplicatedTestimonials = [...testimonials, ...testimonials, ...testimonials, ...testimonials];
 
   return (
     <section id="testimonials" className="testimonials-section">
@@ -45,28 +65,31 @@ const TestimonialsSection = () => {
           className="testimonial-slider"
           variants={containerVariants}
           initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
+          animate="visible"
+          ref={carouselRef}
         >
-          {testimonials.map((testimonial, index) => (
-            <motion.div
-              key={index}
-              className={`testimonial-card ${index === currentTestimonialIndex ? 'active' : ''}`}
-              style={{ transform: `translateX(${(index - currentTestimonialIndex) * 100}%)` }}
-              variants={cardVariants}
-            >
-              <p className="testimonial-text">"{testimonial.text}"</p>
-              <p className="testimonial-author">- {testimonial.name}</p>
-            </motion.div>
-          ))}
+          {duplicatedTestimonials.length > 0 ? (
+            duplicatedTestimonials.map((testimonial, index) => (
+              <motion.div
+                key={index}
+                className="testimonial-card"
+                variants={cardVariants}
+              >
+                <p className="testimonial-text">"{testimonial.text}"</p>
+                <p className="testimonial-author">- {testimonial.name}</p>
+              </motion.div>
+            ))
+          ) : (
+            <p className="no-testimonials">No testimonials available.</p>
+          )}
         </motion.div>
         <div className="testimonial-dots">
-          {testimonials.map((_, index) => (
+          {Array(Math.ceil(testimonials.length / (window.innerWidth <= 768 ? (window.innerWidth <= 640 ? 1 : 2) : 3))).fill().map((_, index) => (
             <button
               key={index}
               className={`testimonial-dot ${index === currentTestimonialIndex ? 'active' : ''}`}
-              onClick={() => setCurrentTestimonialIndex(index)}
-              aria-label={`Go to testimonial ${index + 1}`}
+              onClick={() => scrollToIndex(index)}
+              aria-label={`Go to testimonial row ${index + 1}`}
             />
           ))}
         </div>
